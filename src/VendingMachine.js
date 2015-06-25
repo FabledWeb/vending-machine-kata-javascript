@@ -36,6 +36,13 @@
   VendingMachine.insertCoin = function(coin) {
     var destination = this._isCoinAcceptable(coin) ? '_coinIntake' : '_coinReturn';
     this[destination][coin] = (this[destination][coin] || 0) + 1;
+    this._updateDisplay('$'+(this._computeBalance()).toFixed(2));
+  };
+
+  VendingMachine._computeBalance = function() {
+  };
+
+  VendingMachine._updateDisplay = function() {
   };
 
   //export

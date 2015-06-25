@@ -75,16 +75,13 @@ describe("Jasmine Test Runner", function() {
       describe("rejecting invalid coins", function() {
         beforeEach(function() {
           spyOn(this.vm, '_isCoinAcceptable').andReturn(false);
+          spyOn(this.vm, '_computeBalance').andReturn(.10);
+        });
+        it("doesn't put the coin into the coin intake", function() {
           this.vm._coinIntake = {
             'a few somethings already in there': 4,
             'acceptable coin': 2
           };
-          this.vm._coinReturn = {
-            'a few somethings already in there': 4,
-            'unacceptable coin': 2
-          };
-        });
-        it("doesn't put the coin into the coin intake", function() {
           this.vm.insertCoin('acceptable coin');
           expect(this.vm._coinIntake).toEqual({
             'a few somethings already in there': 4,
@@ -92,6 +89,10 @@ describe("Jasmine Test Runner", function() {
           });
         });
         it("it puts the coin into the coin return", function() {
+          this.vm._coinReturn = {
+            'a few somethings already in there': 4,
+            'unacceptable coin': 2
+          };
           this.vm.insertCoin('unacceptable coin');
           expect(this.vm._coinReturn).toEqual({
             'a few somethings already in there': 4,
@@ -103,16 +104,13 @@ describe("Jasmine Test Runner", function() {
       describe("accepting valid coins", function() {
         beforeEach(function() {
           spyOn(this.vm, '_isCoinAcceptable').andReturn(true);
+          spyOn(this.vm, '_computeBalance').andReturn(.10);
+        });
+        it("puts the coin into the coin intake and updates", function() {
           this.vm._coinIntake = {
             'a few somethings already in there': 4,
             'acceptable coin': 2
           };
-          this.vm._coinReturn = {
-            'a few somethings already in there': 4,
-            'unacceptable coin': 2
-          };
-        });
-        it("puts the coin into the coin intake", function() {
           this.vm.insertCoin('acceptable coin');
           expect(this.vm._coinIntake).toEqual({
             'a few somethings already in there': 4,
@@ -120,11 +118,20 @@ describe("Jasmine Test Runner", function() {
           });
         });
         it("doesn't put the coin into the coin return", function() {
+          this.vm._coinReturn = {
+            'a few somethings already in there': 4,
+            'unacceptable coin': 2
+          };
           this.vm.insertCoin('acceptable coin');
           expect(this.vm._coinReturn).toEqual({
             'a few somethings already in there': 4,
             'unacceptable coin': 2
           });
+        });
+        it("updates the display with the new balance", function() {
+          spyOn(this.vm, '_updateDisplay');
+          this.vm.insertCoin('acceptable coin');
+          expect(this.vm._updateDisplay).toHaveBeenCalledWith('$0.10');
         });
       });
 
