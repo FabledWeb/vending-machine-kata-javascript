@@ -10,7 +10,7 @@
     this._products = {};
     this._change = {};
     this._coinIntake = {};
-    this._coinReturn = {};
+    this.coinReturn = {};
   };
 
   VendingMachine.stockWithGoodies = function(goodies) {
@@ -34,9 +34,14 @@
   };
 
   VendingMachine.insertCoin = function(coin) {
-    var destination = this._isCoinAcceptable(coin) ? '_coinIntake' : '_coinReturn';
+    var destination = this._isCoinAcceptable(coin) ? '_coinIntake' : 'coinReturn';
     this[destination][coin] = (this[destination][coin] || 0) + 1;
     this._updateDisplay('$'+(this._computeBalance()).toFixed(2));
+  };
+
+  VendingMachine.returnCoins = function() {
+    this.coinReturn = this._coinIntake;
+    this._coinIntake = {};
   };
 
   VendingMachine._computeBalance = function() {

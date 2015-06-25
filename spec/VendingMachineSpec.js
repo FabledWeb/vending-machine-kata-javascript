@@ -18,7 +18,7 @@ describe("Jasmine Test Runner", function() {
       expect(this.vm._products).toEqual({});
       expect(this.vm._change).toEqual({});
       expect(this.vm._coinIntake).toEqual({});
-      expect(this.vm._coinReturn).toEqual({});
+      expect(this.vm.coinReturn).toEqual({});
     });
 
     it("can be stocked with goodies", function() {
@@ -115,7 +115,6 @@ describe("Jasmine Test Runner", function() {
 
     });
 
-
     describe("The Display", function() {
 
       it("shows the current display when asked", function() {
@@ -150,12 +149,12 @@ describe("Jasmine Test Runner", function() {
           });
         });
         it("it puts the coin into the coin return", function() {
-          this.vm._coinReturn = {
+          this.vm.coinReturn = {
             'a few somethings already in there': 4,
             'unacceptable coin': 2
           };
           this.vm.insertCoin('unacceptable coin');
-          expect(this.vm._coinReturn).toEqual({
+          expect(this.vm.coinReturn).toEqual({
             'a few somethings already in there': 4,
             'unacceptable coin': 3
           });
@@ -179,12 +178,12 @@ describe("Jasmine Test Runner", function() {
           });
         });
         it("doesn't put the coin into the coin return", function() {
-          this.vm._coinReturn = {
+          this.vm.coinReturn = {
             'a few somethings already in there': 4,
             'unacceptable coin': 2
           };
           this.vm.insertCoin('acceptable coin');
-          expect(this.vm._coinReturn).toEqual({
+          expect(this.vm.coinReturn).toEqual({
             'a few somethings already in there': 4,
             'unacceptable coin': 2
           });
@@ -196,6 +195,39 @@ describe("Jasmine Test Runner", function() {
         });
       });
 
+    });
+
+    describe("Return Coins", function() {
+      describe("when the coin return is empty", function() {
+        beforeEach(function() {
+          this.vm.coinReturn = {};
+        });
+        describe("and there is nothing to return", function() {
+          beforeEach(function() {
+            this.vm._coinIntake = {};
+          });
+          it("returns nothing", function() {
+            this.vm.returnCoins();
+            expect(this.vm.coinReturn).toEqual({});
+          });
+        });
+        describe("and there is something to return", function() {
+          beforeEach(function() {
+            this.vm._coinIntake = {
+              type1: 10,
+              type2: 3
+            };
+          });
+          it("returns something", function() {
+            this.vm.returnCoins();
+            expect(this.vm.coinReturn).toEqual({
+              type1: 10,
+              type2: 3
+            });
+            expect(this.vm._coinIntake).toEqual({});
+          });
+        });
+      });
     });
     
   });
