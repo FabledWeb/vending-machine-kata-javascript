@@ -128,6 +128,15 @@ describe("Jasmine Test Runner", function() {
         expect(this.vm.display()).toBe('something new');
       });
 
+      xdescribe("returning back to the current default state", function() {
+        xit("it resets after SOLD OUT", function() {
+        });
+        xit("it resets after PRICE $price_of_product", function() {
+        });
+        xit("it resets after THANK YOU", function() {
+        });
+      });
+
     });
 
     describe("Inserting Coins", function() {
@@ -268,13 +277,46 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
+    xdescribe("Make Change", function() {
+      //NOTE: check for exact change only scenario...
+      //just make sure it's triggered from here
+    });
+    xdescribe("Exact Change Only", function() {
+      //this is a some-what vague requirement because it
+      //could be possible to be able to make change for one product
+      //but not another. Also you might be able to make change for
+      //someone who only went over by 10 cents, but not by 15 (for example).
+      //Will think about these use cases tomorrow.
+    });
+    xdescribe("Dispense Product", function() {
+      //remove from inventory and place in dispensing bin
+    });
+
     xdescribe("Select a Product", function() {
+      describe("when the product is sold out", function() {
+        //check both to make sure SOLD OUT has precedence over PRICE
+        describe("when enough money has been inserted", function() {
+          it("doesn't try to dispense anything", function() {
+          });
+          it("displays SOLD OUT", function() {
+          });
+        });
+        describe("when enough money has NOT been inserted", function() {
+          it("doesn't try to dispense anything", function() {
+          });
+          it("displays SOLD OUT", function() {
+          });
+        });
+      });
       describe("when enough money has been inserted", function() {
         it("dispenses the product", function() {
         });
         it("displays THANK YOU", function() {
         });
         it("it consumes the coins in the intake, bringing balance to $0", function() {
+        });
+        it("it makes change as applicable", function() {
+          //make sure it calls make change method
         });
       });
       describe("when enough money has NOT been inserted", function() {
