@@ -268,6 +268,25 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
+    xdescribe("Select a Product", function() {
+      describe("when enough money has been inserted", function() {
+        it("dispenses the product", function() {
+        });
+        it("displays THANK YOU", function() {
+        });
+        it("it consumes the coins in the intake, bringing balance to $0", function() {
+        });
+      });
+      describe("when enough money has NOT been inserted", function() {
+        it("it does not dispense the product", function() {
+        });
+        it("displays 'PRICE $price_of_item'", function() {
+        });
+        it("it doesn't consume the coins in the intake", function() {
+        });
+      });
+    });
+
   });
 
 });
