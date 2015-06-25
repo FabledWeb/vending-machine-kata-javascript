@@ -9,10 +9,24 @@ describe("Jasmine Test Runner", function() {
   describe("Vending Machine", function() {
 
     beforeEach(function() {
-      // any startup code goes here
+      this.vm = VendingMachine;
+      this.vm.init();
     });
 
-    it("..first test goes here..", function() {
+    it("can be initialized", function() {
+      this.vm.init();
+      expect(this.vm._products).toEqual({});
+      expect(this.vm._change).toEqual({});
+    });
+
+    it("can be stocked with goodies", function() {
+      this.vm.stockWithGoodies('goodies');
+      expect(this.vm._products).toBe('goodies');
+    });
+
+    it("it can be filled with change", function() {
+      this.vm.fillWithChange('change');
+      expect(this.vm._change).toBe('change');
     });
     
   });
