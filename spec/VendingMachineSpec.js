@@ -17,6 +17,8 @@ describe("Jasmine Test Runner", function() {
       this.vm.init();
       expect(this.vm._products).toEqual({});
       expect(this.vm._change).toEqual({});
+      expect(this.vm._coinIntake).toEqual({});
+      expect(this.vm._coinReturn).toEqual({});
     });
 
     it("can be stocked with goodies", function() {
@@ -68,11 +70,65 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
-    //describe("Inserting Coins", function() {
-    //  it("accepts valid coins", function() {
+    describe("Inserting Coins", function() {
 
-    //  });
-    //});
+      describe("rejecting invalid coins", function() {
+        beforeEach(function() {
+          spyOn(this.vm, '_isCoinAcceptable').andReturn(false);
+          this.vm._coinIntake = {
+            'a few somethings already in there': 4,
+            'acceptable coin': 2
+          };
+          this.vm._coinReturn = {
+            'a few somethings already in there': 4,
+            'unacceptable coin': 2
+          };
+        });
+        it("doesn't put the coin into the coin intake", function() {
+          this.vm.insertCoin('acceptable coin');
+          expect(this.vm._coinIntake).toEqual({
+            'a few somethings already in there': 4,
+            'acceptable coin': 2
+          });
+        });
+        it("it puts the coin into the coin return", function() {
+          this.vm.insertCoin('unacceptable coin');
+          expect(this.vm._coinReturn).toEqual({
+            'a few somethings already in there': 4,
+            'unacceptable coin': 3
+          });
+        });
+      });
+
+      describe("accepting valid coins", function() {
+        beforeEach(function() {
+          spyOn(this.vm, '_isCoinAcceptable').andReturn(true);
+          this.vm._coinIntake = {
+            'a few somethings already in there': 4,
+            'acceptable coin': 2
+          };
+          this.vm._coinReturn = {
+            'a few somethings already in there': 4,
+            'unacceptable coin': 2
+          };
+        });
+        it("puts the coin into the coin intake", function() {
+          this.vm.insertCoin('acceptable coin');
+          expect(this.vm._coinIntake).toEqual({
+            'a few somethings already in there': 4,
+            'acceptable coin': 3
+          });
+        });
+        it("doesn't put the coin into the coin return", function() {
+          this.vm.insertCoin('acceptable coin');
+          expect(this.vm._coinReturn).toEqual({
+            'a few somethings already in there': 4,
+            'unacceptable coin': 2
+          });
+        });
+      });
+
+    });
     
   });
 

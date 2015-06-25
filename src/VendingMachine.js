@@ -7,8 +7,10 @@
   };
 
   VendingMachine.init = function() {
-    VendingMachine._products = {};
-    VendingMachine._change = {};
+    this._products = {};
+    this._change = {};
+    this._coinIntake = {};
+    this._coinReturn = {};
   };
 
   VendingMachine.stockWithGoodies = function(goodies) {
@@ -29,6 +31,11 @@
   };
   VendingMachine._valueOfCoin = function(coin) {
     return COINS[coin] || 0;
+  };
+
+  VendingMachine.insertCoin = function(coin) {
+    var destination = this._isCoinAcceptable(coin) ? '_coinIntake' : '_coinReturn';
+    this[destination][coin] = (this[destination][coin] || 0) + 1;
   };
 
   //export
