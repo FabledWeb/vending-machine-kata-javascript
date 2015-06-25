@@ -42,7 +42,13 @@
   VendingMachine._computeBalance = function() {
   };
 
-  VendingMachine._updateDisplay = function() {
+  //not sure I care to have this abstraction/encapsulation yet, but
+  //going with it for now
+  VendingMachine.display = function() {
+    return this._display;
+  };
+  VendingMachine._updateDisplay = function(text) {
+    this._display = text;
   };
 
   //export

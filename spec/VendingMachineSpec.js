@@ -70,6 +70,21 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
+    describe("The Display", function() {
+
+      it("shows the current display when asked", function() {
+        this.vm._display = 'current display';
+        expect(this.vm.display()).toBe('current display');
+      });
+
+      it("updates the display when I ask it to", function() {
+        this.vm._display = 'whatever it used to be';
+        this.vm._updateDisplay('something new');
+        expect(this.vm.display()).toBe('something new');
+      });
+
+    });
+
     describe("Inserting Coins", function() {
 
       describe("rejecting invalid coins", function() {
