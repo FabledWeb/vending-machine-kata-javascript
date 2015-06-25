@@ -1,5 +1,10 @@
 (function() {
   var VendingMachine = VendingMachine || {};
+  var COINS = {
+    nickel:  { value: 0.05 },
+    dime:    { value: 0.10 },
+    quarter: { value: 0.25 }
+  };
 
   VendingMachine.init = function() {
     VendingMachine._products = {};
@@ -17,6 +22,12 @@
     //change should be passed as an object like so:
     //  { nickels: 30, dimes: 100, quarters: 10 }
     this._change = change;
+  };
+  VendingMachine._isCoinAcceptable = function(coin) {
+    return COINS[coin] ? true : false;
+  };
+  VendingMachine._valueOfCoin = function(coin) {
+    return (COINS[coin] || {value:0}).value;
   };
 
   //export
