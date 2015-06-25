@@ -70,6 +70,51 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
+    describe("computing the current balance of the coin intake", function() {
+      it("handles an empty intake", function() {
+        this.vm._coinIntake = {};
+        expect(this.vm._computeBalance()).toBe(0);
+      });
+      it("handles a single coin with a value of 1", function() {
+        spyOn(this.vm, '_valueOfCoin').and.returnValue(1);
+        this.vm._coinIntake = {
+          'single coin': 1
+        };
+        expect(this.vm._computeBalance()).toBe(1);
+      });
+      it("handles a single coin with a non-1 value", function() {
+        spyOn(this.vm, '_valueOfCoin').and.returnValue(5);
+        this.vm._coinIntake = {
+          'single coin': 1
+        };
+        expect(this.vm._computeBalance()).toBe(5);
+      });
+      it("handles multiple coins with a non-1 value", function() {
+        spyOn(this.vm, '_valueOfCoin').and.returnValue(5);
+        this.vm._coinIntake = {
+          'coins': 4
+        };
+        expect(this.vm._computeBalance()).toBe(20);
+      });
+      it("handles multiple coins of different values", function() {
+        spyOn(this.vm, '_valueOfCoin').and.callFake(function(coin) {
+          var coins = {
+            'coin type 1': 5,
+            'coin type 2': 10,
+            'coin type 3': 1
+          };
+          return coins[coin];
+        });
+        this.vm._coinIntake = {
+          'coin type 1': 4,
+          'coin type 2': 1,
+          'coin type 3': 100
+        };
+        expect(this.vm._computeBalance()).toBe(5*4 + 10*1 + 1*100);
+      });
+
+    });
+
     describe("The Display", function() {
 
       it("shows the current display when asked", function() {
@@ -89,8 +134,8 @@ describe("Jasmine Test Runner", function() {
 
       describe("rejecting invalid coins", function() {
         beforeEach(function() {
-          spyOn(this.vm, '_isCoinAcceptable').andReturn(false);
-          spyOn(this.vm, '_computeBalance').andReturn(.10);
+          spyOn(this.vm, '_isCoinAcceptable').and.returnValue(false);
+          spyOn(this.vm, '_computeBalance').and.returnValue(.10);
         });
         it("doesn't put the coin into the coin intake", function() {
           this.vm._coinIntake = {
@@ -118,8 +163,8 @@ describe("Jasmine Test Runner", function() {
 
       describe("accepting valid coins", function() {
         beforeEach(function() {
-          spyOn(this.vm, '_isCoinAcceptable').andReturn(true);
-          spyOn(this.vm, '_computeBalance').andReturn(.10);
+          spyOn(this.vm, '_isCoinAcceptable').and.returnValue(true);
+          spyOn(this.vm, '_computeBalance').and.returnValue(.10);
         });
         it("puts the coin into the coin intake and updates", function() {
           this.vm._coinIntake = {

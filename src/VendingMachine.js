@@ -40,6 +40,20 @@
   };
 
   VendingMachine._computeBalance = function() {
+    // You might ask yourself, "why would you want to compute
+    // this every time? Why wouldn't you just update some balance
+    // variable as coins are added/returned?"
+    // Well, it's because I believe that keeping track of the same thing
+    // in 2 ways only ever leads to pain. I need to store the coins in
+    // the intake so that they can be returned (without making change),
+    // so I don't want to store that info and also store the sum of those
+    // coins in separate variable. Future bugs appear when you have to
+    // be sure to keep 2 things like that in sync.
+    var balance = 0;
+    for(var k in this._coinIntake) {
+      balance += this._valueOfCoin(k) * this._coinIntake[k];
+    }
+    return balance;
   };
 
   //not sure I care to have this abstraction/encapsulation yet, but
