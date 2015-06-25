@@ -228,8 +228,46 @@ describe("Jasmine Test Runner", function() {
           });
         });
       });
+
+      describe("when the coin return already has stuff in it", function() {
+        beforeEach(function() {
+          this.vm.coinReturn = {
+            junk: 2,
+            type1: 3
+          };
+        });
+        describe("and there is nothing to return", function() {
+          beforeEach(function() {
+            this.vm._coinIntake = {};
+          });
+          it("returns nothing, but leaves existing stuff alone", function() {
+            this.vm.returnCoins();
+            expect(this.vm.coinReturn).toEqual({
+              junk: 2,
+              type1: 3
+            });
+          });
+        });
+        describe("and there is something to return", function() {
+          beforeEach(function() {
+            this.vm._coinIntake = {
+              type1: 10,
+              type2: 3
+            };
+          });
+          it("adds something to existing coins in return tray", function() {
+            this.vm.returnCoins();
+            expect(this.vm.coinReturn).toEqual({
+              junk: 2,
+              type1: 13,
+              type2: 3
+            });
+            expect(this.vm._coinIntake).toEqual({});
+          });
+        });
+      });
     });
-    
+
   });
 
 });

@@ -40,7 +40,9 @@
   };
 
   VendingMachine.returnCoins = function() {
-    this.coinReturn = this._coinIntake;
+    for(var k in this._coinIntake) {
+      this.coinReturn[k] = (this.coinReturn[k] || 0) + this._coinIntake[k];
+    }
     this._coinIntake = {};
   };
 
