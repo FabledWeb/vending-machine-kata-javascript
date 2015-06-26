@@ -76,6 +76,7 @@
     }
     this._coinIntake = {};
   };
+
   VendingMachine._makeChange = function() {
   };
 
@@ -105,7 +106,9 @@
   };
 
   VendingMachine._canAfford = function(product) {
+    return this._computeBalance() >= this._priceOfProduct(product) ? true : false;
   };
+
   VendingMachine._dispense = function(product) {
   };
 

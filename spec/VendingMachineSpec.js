@@ -291,8 +291,28 @@ describe("Jasmine Test Runner", function() {
     xdescribe("Dispense Product", function() {
       //remove from inventory and place in dispensing bin
     });
-    xdescribe("Can Afford", function() {
-      //check if they can afford this product
+    describe("Can Afford?", function() {
+      beforeEach(function() {
+        spyOn(this.vm, '_computeBalance').and.returnValue(100);
+      });
+      describe("when product is too expensive", function() {
+        beforeEach(function() {
+          spyOn(this.vm, '_priceOfProduct').and.returnValue(100.01);
+        });
+        it("it says 'no snack for you'", function() {
+          var canAfford = this.vm._canAfford('expensive product');
+          expect(canAfford).toBe(false);
+        });
+      });
+      describe("when product is just right", function() {
+        beforeEach(function() {
+          spyOn(this.vm, '_priceOfProduct').and.returnValue(100);
+        });
+        it("it says 'let them eat cake'", function() {
+          var canAfford = this.vm._canAfford('goldilocks product');
+          expect(canAfford).toBe(true);
+        });
+      });
     });
     describe("Consume Coins in Coin Intake", function() {
       //gonna use this from _makeChange
