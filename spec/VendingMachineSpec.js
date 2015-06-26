@@ -165,6 +165,17 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
+    describe("Set Display to Default", function() {
+      beforeEach(function() {
+        spyOn(this.vm, '_defaultDisplay').and.returnValue('default display text');
+        spyOn(this.vm, '_updateDisplay');
+      });
+      it("updates the display to the default text", function() {
+        this.vm._setDisplayToDefault();
+        expect(this.vm._updateDisplay).toHaveBeenCalledWith('default display text');
+      });
+    });
+
     describe("The Display", function() {
 
       it("shows the current display when asked", function() {
@@ -178,13 +189,10 @@ describe("Jasmine Test Runner", function() {
         expect(this.vm.display()).toBe('something new');
       });
 
-      xdescribe("returning back to the current default state", function() {
-        xit("it resets after SOLD OUT", function() {
-        });
-        xit("it resets after PRICE $price_of_product", function() {
-        });
-        xit("it resets after THANK YOU", function() {
-        });
+      it("returns back to the default state after being called", function() {
+        spyOn(this.vm, '_setDisplayToDefault');
+        this.vm.display();
+        expect(this.vm._setDisplayToDefault).toHaveBeenCalled();
       });
 
     });

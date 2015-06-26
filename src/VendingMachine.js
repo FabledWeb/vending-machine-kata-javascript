@@ -84,7 +84,7 @@
   };
 
   VendingMachine._setDisplayToDefault = function() {
-    //TODO: implement
+    this._updateDisplay(this._defaultDisplay());
   };
 
   VendingMachine._defaultDisplay = function() {
@@ -132,7 +132,9 @@
   //not sure I care to have this abstraction/encapsulation yet, but
   //going with it for now
   VendingMachine.display = function() {
-    return this._display;
+    var output = this._display;
+    this._setDisplayToDefault();
+    return output;
   };
   VendingMachine._updateDisplay = function(text) {
     this._display = text;
