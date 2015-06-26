@@ -288,8 +288,40 @@ describe("Jasmine Test Runner", function() {
       //someone who only went over by 10 cents, but not by 15 (for example).
       //Will think about these use cases tomorrow.
     });
-    xdescribe("Dispense Product", function() {
+    describe("dispensingTray", function() {
+      beforeEach(function() {
+        this.vm._dispensingTray = {
+          'my snacks': 2
+        };
+      });
+      it("returns what is in the dispensing tray", function() {
+        expect(this.vm.dispensingTray()).toEqual({
+          'my snacks': 2
+        });
+      });
+    });
+    describe("Dispense Product", function() {
       //remove from inventory and place in dispensing bin
+      beforeEach(function() {
+        this.vm._products = {
+          'stale thing': 2,
+          'tempting thing': 4
+        };
+        this.vm._dispensingTray = {
+          'nice! free snack': 1
+        };
+      });
+      it("removes the product from it's inventory", function() {
+        this.vm._dispense('tempting thing');
+        expect(this.vm._products['tempting thing']).toBe(3);
+      });
+      it("drops the product in the dispensing tray (what do you really call this thing?)", function() {
+        this.vm._dispense('tempting thing');
+        expect(this.vm.dispensingTray()).toEqual({
+          'nice! free snack': 1,
+          'tempting thing': 1
+        });
+      });
     });
     describe("Can Afford?", function() {
       beforeEach(function() {

@@ -96,6 +96,10 @@
     }
   };
 
+  VendingMachine.dispensingTray = function() {
+    return this._dispensingTray;
+  };
+
   //not sure I care to have this abstraction/encapsulation yet, but
   //going with it for now
   VendingMachine.display = function() {
@@ -110,6 +114,9 @@
   };
 
   VendingMachine._dispense = function(product) {
+    //again with the no validation, but it's a private method and this is just for an interview
+    this._products[product]--;
+    this._dispensingTray[product] = (this._dispensingTray[product] || 0) + 1;
   };
 
   //export
