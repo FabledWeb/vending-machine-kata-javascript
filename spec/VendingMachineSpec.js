@@ -291,40 +291,96 @@ describe("Jasmine Test Runner", function() {
     xdescribe("Dispense Product", function() {
       //remove from inventory and place in dispensing bin
     });
+    xdescribe("Can Afford", function() {
+      //check if they can afford this product
+    });
+    xdescribe("Consume Coins in Coin Intake", function() {
+      //gonna use this from _makeChange
+    });
 
-    xdescribe("Select a Product", function() {
+    describe("Select a Product", function() {
+      beforeEach(function() {
+        spyOn(this.vm, '_dispense');
+        spyOn(this.vm, '_updateDisplay');
+        spyOn(this.vm, '_makeChange');
+      });
       describe("when the product is sold out", function() {
+        beforeEach(function() {
+          this.vm._products['the best snack'] = 0; //none left
+        });
         //check both to make sure SOLD OUT has precedence over PRICE
-        describe("when enough money has been inserted", function() {
+        describe("and enough money has been inserted", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_canAfford').and.returnValue(true);
+          });
           it("doesn't try to dispense anything", function() {
+            this.vm.selectProduct('the best snack');
+            expect(this.vm._dispense).not.toHaveBeenCalled();
           });
           it("displays SOLD OUT", function() {
+            this.vm.selectProduct('the best snack');
+            expect(this.vm._updateDisplay).toHaveBeenCalledWith('SOLD OUT');
           });
         });
-        describe("when enough money has NOT been inserted", function() {
+        describe("and enough money has NOT been inserted", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_canAfford').and.returnValue(false);
+          });
           it("doesn't try to dispense anything", function() {
+            this.vm.selectProduct('the best snack');
+            expect(this.vm._dispense).not.toHaveBeenCalled();
           });
           it("displays SOLD OUT", function() {
+            this.vm.selectProduct('the best snack');
+            expect(this.vm._updateDisplay).toHaveBeenCalledWith('SOLD OUT');
           });
         });
       });
-      describe("when enough money has been inserted", function() {
-        it("dispenses the product", function() {
+      describe("when the product is available", function() {
+        beforeEach(function() {
+          this.vm._products["that'll have to do snack"] = 3; //there are some
         });
-        it("displays THANK YOU", function() {
+        describe("and enough money has NOT been inserted", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_canAfford').and.returnValue(false);
+            spyOn(this.vm, '_priceOfProduct').and.returnValue(1000000);
+          });
+          it("doesn't try to dispense anything", function() {
+            this.vm.selectProduct("that'll have to do snack");
+            expect(this.vm._dispense).not.toHaveBeenCalled();
+          });
+          it("doesn't try to make change", function() {
+            this.vm.selectProduct("that'll have to do snack");
+            expect(this.vm._makeChange).not.toHaveBeenCalled();
+          });
+          it("displays PRICE $price_of_item", function() {
+            this.vm.selectProduct("that'll have to do snack");
+            expect(this.vm._updateDisplay).toHaveBeenCalledWith("PRICE $1000000.00");
+          });
         });
-        it("it consumes the coins in the intake, bringing balance to $0", function() {
-        });
-        it("it makes change as applicable", function() {
-          //make sure it calls make change method
-        });
-      });
-      describe("when enough money has NOT been inserted", function() {
-        it("it does not dispense the product", function() {
-        });
-        it("displays 'PRICE $price_of_item'", function() {
-        });
-        it("it doesn't consume the coins in the intake", function() {
+        describe("and enough money has been inserted", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_canAfford').and.returnValue(true);
+            this.vm._coinIntake = { 'some coins': 2 };
+          });
+          it("dispenses the product", function() {
+            this.vm.selectProduct("that'll have to do snack");
+            expect(this.vm._dispense).toHaveBeenCalledWith("that'll have to do snack");
+          });
+          it("displays THANK YOU", function() {
+            this.vm.selectProduct("that'll have to do snack");
+            expect(this.vm._updateDisplay).toHaveBeenCalledWith('THANK YOU');
+          });
+          //xit("it consumes the coins in the intake, bringing balance to $0", function() {
+            //I think I'll move this check into the spec for _makeChange
+            //this.vm.selectProduct("that'll have to do snack");
+            //expect(this.vm._consumeCoins).toHaveBeenCalled();
+          //});
+          it("it makes change as applicable", function() {
+            this.vm.selectProduct("that'll have to do snack");
+            //make sure it calls make change method
+            expect(this.vm._makeChange).toHaveBeenCalled();
+          });
         });
       });
     });

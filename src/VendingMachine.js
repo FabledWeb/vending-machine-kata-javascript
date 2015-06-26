@@ -5,6 +5,11 @@
     dime:    0.10,
     quarter: 0.25
   };
+  var PRODUCTS = {
+    cola: 1,
+    chips: 0.5,
+    candy: 0.65
+  };
 
   VendingMachine.init = function() {
     this._products = {};
@@ -31,6 +36,8 @@
   };
   VendingMachine._valueOfCoin = function(coin) {
     return COINS[coin] || 0;
+  };
+  VendingMachine._priceOfProduct = function(product) {
   };
 
   VendingMachine.insertCoin = function(coin) {
@@ -63,6 +70,27 @@
     return balance;
   };
 
+  VendingMachine._consumeCoins = function() {
+  };
+  VendingMachine._makeChange = function() {
+  };
+
+  VendingMachine.selectProduct = function(product) {
+    if(this._products[product]) {
+      if(this._canAfford(product)) {
+        this._dispense(product);
+        this._updateDisplay('THANK YOU');
+        this._makeChange();
+      }
+      else {
+        this._updateDisplay('PRICE $'+this._priceOfProduct(product).toFixed(2));
+      }
+    }
+    else {
+      this._updateDisplay('SOLD OUT');
+    }
+  };
+
   //not sure I care to have this abstraction/encapsulation yet, but
   //going with it for now
   VendingMachine.display = function() {
@@ -70,6 +98,11 @@
   };
   VendingMachine._updateDisplay = function(text) {
     this._display = text;
+  };
+
+  VendingMachine._canAfford = function(product) {
+  };
+  VendingMachine._dispense = function(product) {
   };
 
   //export
