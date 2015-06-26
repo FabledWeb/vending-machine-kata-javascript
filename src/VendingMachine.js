@@ -71,6 +71,10 @@
   };
 
   VendingMachine._consumeCoins = function() {
+    for(var k in this._coinIntake) {
+      this._change[k] = (this._change[k] || 0) + this._coinIntake[k];
+    }
+    this._coinIntake = {};
   };
   VendingMachine._makeChange = function() {
   };

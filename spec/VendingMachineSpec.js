@@ -294,8 +294,30 @@ describe("Jasmine Test Runner", function() {
     xdescribe("Can Afford", function() {
       //check if they can afford this product
     });
-    xdescribe("Consume Coins in Coin Intake", function() {
+    describe("Consume Coins in Coin Intake", function() {
       //gonna use this from _makeChange
+      beforeEach(function() {
+        this.vm._coinIntake = {
+          type1: 3,
+          type3: 1
+        };
+        this.vm._change = {
+          type1: 1,
+          type2: 10
+        };
+      });
+      it("empties the coin intake", function() {
+        this.vm._consumeCoins();
+        expect(this.vm._coinIntake).toEqual({});
+      });
+      it("adds coins to it's change bucket", function() {
+        this.vm._consumeCoins();
+        expect(this.vm._change).toEqual({
+          type1: 4,
+          type2: 10,
+          type3: 1
+        });
+      });
     });
 
     describe("Select a Product", function() {
