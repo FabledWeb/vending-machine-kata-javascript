@@ -116,6 +116,55 @@ describe("Jasmine Test Runner", function() {
 
     });
 
+    describe("Formatted Balance", function() {
+    });
+
+    describe("Default Display State", function() {
+      describe("when there is no balance", function() {
+        beforeEach(function() {
+          spyOn(this.vm, '_computeBalance').and.returnValue(0);
+        });
+        describe("and exact change is required", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_exactChangeRequired').and.returnValue(true);
+          });
+          it("shows EXACT CHANGE ONLY", function() {
+            expect(this.vm._defaultDisplay()).toBe('EXACT CHANGE ONLY');
+          });
+        });
+        describe("and exact change is NOT required", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_exactChangeRequired').and.returnValue(false);
+          });
+          it("shows INSERT COINS", function() {
+            expect(this.vm._defaultDisplay()).toBe('INSERT COINS');
+          });
+        });
+      });
+      describe("when there is a balance", function() {
+        beforeEach(function() {
+          spyOn(this.vm, '_computeBalance').and.returnValue(1);
+          spyOn(this.vm, '_formattedBalance').and.returnValue('my balance');
+        });
+        describe("and exact change is required", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_exactChangeRequired').and.returnValue(true);
+          });
+          it("shows still just shows the balance", function() {
+            expect(this.vm._defaultDisplay()).toBe('my balance');
+          });
+        });
+        describe("and exact change is NOT required", function() {
+          beforeEach(function() {
+            spyOn(this.vm, '_exactChangeRequired').and.returnValue(false);
+          });
+          it("shows the balance", function() {
+            expect(this.vm._defaultDisplay()).toBe('my balance');
+          });
+        });
+      });
+    });
+
     describe("The Display", function() {
 
       it("shows the current display when asked", function() {
@@ -199,9 +248,9 @@ describe("Jasmine Test Runner", function() {
           });
         });
         it("updates the display with the new balance", function() {
-          spyOn(this.vm, '_updateDisplay');
+          spyOn(this.vm, '_setDisplayToDefault');
           this.vm.insertCoin('acceptable coin');
-          expect(this.vm._updateDisplay).toHaveBeenCalledWith('$0.10');
+          expect(this.vm._setDisplayToDefault).toHaveBeenCalled();
         });
       });
 

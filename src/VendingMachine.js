@@ -39,12 +39,15 @@
     return COINS[coin] || 0;
   };
   VendingMachine._priceOfProduct = function(product) {
+    //TODO: implement
   };
 
   VendingMachine.insertCoin = function(coin) {
     var destination = this._isCoinAcceptable(coin) ? '_coinIntake' : 'coinReturn';
     this[destination][coin] = (this[destination][coin] || 0) + 1;
-    this._updateDisplay('$'+(this._computeBalance()).toFixed(2));
+    //Set to default display.  Default display logic is somewhat complex,
+    //so don't duplicate that logic here.
+    this._setDisplayToDefault();
   };
 
   VendingMachine.returnCoins = function() {
@@ -71,6 +74,30 @@
     return balance;
   };
 
+  VendingMachine._exactChangeRequired = function() {
+    //TODO: implement
+  };
+
+  VendingMachine._formattedBalance = function() {
+    //TODO: implement
+    //display = '$'+(this._computeBalance()).toFixed(2);
+  };
+
+  VendingMachine._setDisplayToDefault = function() {
+    //TODO: implement
+  };
+
+  VendingMachine._defaultDisplay = function() {
+    var display = 'INSERT COINS';
+    if(this._computeBalance() > 0) {
+      display = this._formattedBalance();
+    }
+    else if(this._exactChangeRequired()) {
+      display = 'EXACT CHANGE ONLY';
+    }
+    return display;
+  };
+
   VendingMachine._consumeCoins = function() {
     for(var k in this._coinIntake) {
       this._change[k] = (this._change[k] || 0) + this._coinIntake[k];
@@ -79,6 +106,7 @@
   };
 
   VendingMachine._makeChange = function() {
+    //TODO: implement
   };
 
   VendingMachine.selectProduct = function(product) {
