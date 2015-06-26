@@ -15,6 +15,7 @@
     this._products = {};
     this._change = {};
     this._coinIntake = {};
+    this._dispensingTray = {};
     this.coinReturn = {};
   };
 

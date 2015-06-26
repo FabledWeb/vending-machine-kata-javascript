@@ -18,6 +18,7 @@ describe("Jasmine Test Runner", function() {
       expect(this.vm._products).toEqual({});
       expect(this.vm._change).toEqual({});
       expect(this.vm._coinIntake).toEqual({});
+      expect(this.vm._dispensingTray).toEqual({});
       expect(this.vm.coinReturn).toEqual({});
     });
 
@@ -280,6 +281,11 @@ describe("Jasmine Test Runner", function() {
     xdescribe("Make Change", function() {
       //NOTE: check for exact change only scenario...
       //just make sure it's triggered from here
+          //xit("it consumes the coins in the intake, bringing balance to $0", function() {
+            //I think I'll move this check into the spec for _makeChange
+            //this.vm.selectProduct("that'll have to do snack");
+            //expect(this.vm._consumeCoins).toHaveBeenCalled();
+          //});
     });
     xdescribe("Exact Change Only", function() {
       //this is a some-what vague requirement because it
@@ -288,6 +294,7 @@ describe("Jasmine Test Runner", function() {
       //someone who only went over by 10 cents, but not by 15 (for example).
       //Will think about these use cases tomorrow.
     });
+
     describe("dispensingTray", function() {
       beforeEach(function() {
         this.vm._dispensingTray = {
@@ -445,11 +452,6 @@ describe("Jasmine Test Runner", function() {
             this.vm.selectProduct("that'll have to do snack");
             expect(this.vm._updateDisplay).toHaveBeenCalledWith('THANK YOU');
           });
-          //xit("it consumes the coins in the intake, bringing balance to $0", function() {
-            //I think I'll move this check into the spec for _makeChange
-            //this.vm.selectProduct("that'll have to do snack");
-            //expect(this.vm._consumeCoins).toHaveBeenCalled();
-          //});
           it("it makes change as applicable", function() {
             this.vm.selectProduct("that'll have to do snack");
             //make sure it calls make change method
