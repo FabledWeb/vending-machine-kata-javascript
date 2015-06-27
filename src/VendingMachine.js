@@ -56,6 +56,27 @@
     }
   };
 
+  VendingMachine._consumeCoins = function() {
+    for(var k in this._coinIntake) {
+      this._change[k] = (this._change[k] || 0) + this._coinIntake[k];
+    }
+    this._coinIntake = {};
+  };
+
+  VendingMachine._dispenseChange = function(amount) {
+    //TODO: implement
+  };
+
+  VendingMachine._makeChange = function(product) {
+    var balance = this._computeBalance();
+    var diff = balance - this._priceOfProduct(product);
+    //consume the coins in the intake first to use as toward the change
+    this._consumeCoins();
+    this._dispenseChange(diff);
+  };
+
+
+
   VendingMachine.returnCoins = function() {
     this._dispenseCoins(this._coinIntake);
     this._coinIntake = {};
@@ -99,25 +120,6 @@
       display = 'EXACT CHANGE ONLY';
     }
     return display;
-  };
-
-  VendingMachine._consumeCoins = function() {
-    for(var k in this._coinIntake) {
-      this._change[k] = (this._change[k] || 0) + this._coinIntake[k];
-    }
-    this._coinIntake = {};
-  };
-
-  VendingMachine._dispenseChange = function(amount) {
-    //TODO: implement
-  };
-
-  VendingMachine._makeChange = function(product) {
-    var balance = this._computeBalance();
-    var diff = balance - this._priceOfProduct(product);
-    //consume the coins in the intake first to use as toward the change
-    this._consumeCoins();
-    this._dispenseChange(diff);
   };
 
   VendingMachine.selectProduct = function(product) {
