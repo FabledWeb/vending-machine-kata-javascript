@@ -368,6 +368,70 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
+    describe("Find the Largest Available Coin", function() {
+      describe("when every coin type is available", function() {
+        beforeEach(function() {
+          this.vm._change = {
+            quarter: 1,
+            dime: 1,
+            nickel: 1
+          };
+        });
+        describe("and we need a quarter", function() {
+          it("finds a quarter", function() {
+            expect(this.vm._findLargestCoin(.25)).toBe('quarter');
+            expect(this.vm._findLargestCoin(.26)).toBe('quarter');
+          });
+        });
+        describe("and we need a dime", function() {
+          it("finds a dime", function() {
+            expect(this.vm._findLargestCoin(.10)).toBe('dime');
+            expect(this.vm._findLargestCoin(.24)).toBe('dime');
+          });
+        });
+        describe("and we need a nickel", function() {
+          it("finds a nickel", function() {
+            expect(this.vm._findLargestCoin(.05)).toBe('nickel');
+            expect(this.vm._findLargestCoin(.09)).toBe('nickel');
+          });
+        });
+      });
+      describe("when quarters aren't available", function() {
+        beforeEach(function() {
+          this.vm._change = {
+            quarter: 0,
+            dime: 1,
+            nickel: 1
+          };
+        });
+        describe("but we need a quarter", function() {
+          it("settles for a dime", function() {
+            expect(this.vm._findLargestCoin(.25)).toBe('dime');
+            expect(this.vm._findLargestCoin(.26)).toBe('dime');
+          });
+        });
+      });
+      describe("when dimes aren't available", function() {
+        beforeEach(function() {
+          this.vm._change = {
+            quarter: 1,
+            dime: 0,
+            nickel: 1
+          };
+        });
+        describe("but we need a dime", function() {
+          it("settles for a nickel", function() {
+            expect(this.vm._findLargestCoin(.10)).toBe('nickel');
+            expect(this.vm._findLargestCoin(.11)).toBe('nickel');
+          });
+        });
+      });
+    });
+
+    describe("Dispense Change", function() {
+
+    });
+
     describe("Make Change", function() {
       //NOTE: check for exact change only scenario...
       //just make sure it's triggered from here

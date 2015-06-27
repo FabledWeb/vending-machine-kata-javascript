@@ -51,6 +51,7 @@
   };
 
   VendingMachine._dispenseCoins = function(coins) {
+    //this function adds any coins you ask to the coin return
     for(var k in coins) {
       this.coinReturn[k] = (this.coinReturn[k] || 0) + coins[k];
     }
@@ -63,8 +64,18 @@
     this._coinIntake = {};
   };
 
+  VendingMachine._findLargestCoin = function(value) {
+    var largest;
+    for(var coin in this._change) {
+      if(this._change[coin] && this._valueOfCoin(coin) > this._valueOfCoin(largest) && this._valueOfCoin(coin) <= value) {
+        largest = coin;
+      }
+    }
+    return largest;
+  };
+
   VendingMachine._dispenseChange = function(amount) {
-    //TODO: implement
+    //figures out which coins need to be returned as change and dispenses them
   };
 
   VendingMachine._makeChange = function(product) {
@@ -74,8 +85,6 @@
     this._consumeCoins();
     this._dispenseChange(diff);
   };
-
-
 
   VendingMachine.returnCoins = function() {
     this._dispenseCoins(this._coinIntake);
