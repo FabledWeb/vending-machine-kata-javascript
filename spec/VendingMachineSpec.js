@@ -429,17 +429,27 @@ describe("Jasmine Test Runner", function() {
     });
 
     describe("Dispense Change", function() {
-
+      beforeEach(function() {
+        spyOn(this.vm, '_findLargestCoin').and.returnValue('big ol coin');
+        spyOn(this.vm, '_valueOfCoin').and.returnValue(5);
+        spyOn(this.vm, '_dispenseCoins');
+        this.vm._change = {
+          'big ol coin': 10,
+          'some other coin': 5
+        };
+      });
+      it("removes the dispensed change from our change purse", function() {
+        this.vm._dispenseChange(20);
+        expect(this.vm._change['big ol coin']).toBe(10 - (20/5));
+      });
+      it("keeps dealing out the largest coin needed until we're done", function() {
+        this.vm._dispenseChange(20);
+        expect(this.vm._dispenseCoins).toHaveBeenCalledWith({'big ol coin': 1});
+        expect(this.vm._dispenseCoins.calls.count()).toBe(20/5);
+      });
     });
 
     describe("Make Change", function() {
-      //NOTE: check for exact change only scenario...
-      //just make sure it's triggered from here
-          //xit("it consumes the coins in the intake, bringing balance to $0", function() {
-            //I think I'll move this check into the spec for _makeChange
-            //this.vm.selectProduct("that'll have to do snack");
-            //expect(this.vm._consumeCoins).toHaveBeenCalled();
-          //});
       beforeEach(function() {
         spyOn(this.vm, '_consumeCoins');
         spyOn(this.vm, '_dispenseChange');

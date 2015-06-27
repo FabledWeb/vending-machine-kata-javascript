@@ -76,6 +76,14 @@
 
   VendingMachine._dispenseChange = function(amount) {
     //figures out which coins need to be returned as change and dispenses them
+    while(amount > 0) {
+      var coin = this._findLargestCoin(amount);
+      this._change[coin]--; //remove it from out piggy bank
+      var dispenseMe = {};
+      dispenseMe[coin] = 1;
+      this._dispenseCoins(dispenseMe); //add to dispensing tray
+      amount-= this._valueOfCoin(coin); //now we need a little less money
+    }
   };
 
   VendingMachine._makeChange = function(product) {
