@@ -39,7 +39,7 @@
     return COINS[coin] || 0;
   };
   VendingMachine._priceOfProduct = function(product) {
-    //TODO: implement
+    return PRODUCTS[product];
   };
 
   VendingMachine.insertCoin = function(coin) {

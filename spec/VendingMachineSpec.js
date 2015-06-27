@@ -53,7 +53,7 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
-    describe("knowing the value of coins", function() {
+    describe("Value of Coins", function() {
       it("knows the value of a nickel", function() {
         expect(this.vm._valueOfCoin('nickel')).toBe(0.05);
       });
@@ -68,6 +68,18 @@ describe("Jasmine Test Runner", function() {
       });
       it("knows that everything else is valueless", function() {
         expect(this.vm._valueOfCoin('good-looks')).toBe(0);
+      });
+    });
+
+    describe("Price of Products", function() {
+      it("knows the price of cola", function() {
+        expect(this.vm._priceOfProduct('cola')).toBe(1);
+      });
+      it("knows the price of chips", function() {
+        expect(this.vm._priceOfProduct('chips')).toBe(0.5);
+      });
+      it("knows the price of candy", function() {
+        expect(this.vm._priceOfProduct('candy')).toBe(0.65);
       });
     });
 
@@ -364,6 +376,7 @@ describe("Jasmine Test Runner", function() {
         });
       });
     });
+
     describe("Dispense Product", function() {
       //remove from inventory and place in dispensing bin
       beforeEach(function() {
