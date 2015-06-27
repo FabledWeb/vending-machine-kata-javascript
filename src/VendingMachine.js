@@ -79,8 +79,7 @@
   };
 
   VendingMachine._formattedBalance = function() {
-    //TODO: implement
-    //display = '$'+(this._computeBalance()).toFixed(2);
+    return '$'+(this._computeBalance()).toFixed(2);
   };
 
   VendingMachine._setDisplayToDefault = function() {

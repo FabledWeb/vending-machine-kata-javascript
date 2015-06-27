@@ -129,6 +129,22 @@ describe("Jasmine Test Runner", function() {
     });
 
     describe("Formatted Balance", function() {
+      it("formats whole dollars correctly", function() {
+        spyOn(this.vm, '_computeBalance').and.returnValue(42);
+        expect(this.vm._formattedBalance()).toBe('$42.00');
+      });
+      it("formats tens of cents correctly", function() {
+        spyOn(this.vm, '_computeBalance').and.returnValue(42.50);
+        expect(this.vm._formattedBalance()).toBe('$42.50');
+      });
+      it("formats cents correctly", function() {
+        spyOn(this.vm, '_computeBalance').and.returnValue(42.51);
+        expect(this.vm._formattedBalance()).toBe('$42.51');
+      });
+      it("formats balances less than a dollar correctly", function() {
+        spyOn(this.vm, '_computeBalance').and.returnValue(.5);
+        expect(this.vm._formattedBalance()).toBe('$0.50');
+      });
     });
 
     describe("Default Display State", function() {
