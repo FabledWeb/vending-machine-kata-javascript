@@ -50,10 +50,14 @@
     this._setDisplayToDefault();
   };
 
-  VendingMachine.returnCoins = function() {
-    for(var k in this._coinIntake) {
-      this.coinReturn[k] = (this.coinReturn[k] || 0) + this._coinIntake[k];
+  VendingMachine._dispenseCoins = function(coins) {
+    for(var k in coins) {
+      this.coinReturn[k] = (this.coinReturn[k] || 0) + coins[k];
     }
+  };
+
+  VendingMachine.returnCoins = function() {
+    this._dispenseCoins(this._coinIntake);
     this._coinIntake = {};
   };
 
@@ -104,7 +108,7 @@
     this._coinIntake = {};
   };
 
-  VendingMachine._dispenseChange = function() {
+  VendingMachine._dispenseChange = function(amount) {
     //TODO: implement
   };
 

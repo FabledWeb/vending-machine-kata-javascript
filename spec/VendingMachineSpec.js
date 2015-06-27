@@ -292,34 +292,46 @@ describe("Jasmine Test Runner", function() {
 
     });
 
-    describe("Return Coins", function() {
+    describe("Return User's Coins", function() {
+      beforeEach(function() {
+        spyOn(this.vm, '_dispenseCoins');
+        this.vm._coinIntake = {
+          someCoins: 10
+        };
+      });
+      it("dispenses coins from the the intake to the coin return", function() {
+        this.vm.returnCoins();
+        expect(this.vm._dispenseCoins).toHaveBeenCalledWith({
+          someCoins: 10
+        });
+      });
+      it("removes coins from intake", function() {
+        this.vm.returnCoins();
+        expect(this.vm._coinIntake).toEqual({});
+      });
+    });
+
+    describe("Dispense Coins to Coin Return Tray", function() {
       describe("when the coin return is empty", function() {
         beforeEach(function() {
           this.vm.coinReturn = {};
         });
         describe("and there is nothing to return", function() {
-          beforeEach(function() {
-            this.vm._coinIntake = {};
-          });
           it("returns nothing", function() {
-            this.vm.returnCoins();
+            this.vm._dispenseCoins({});
             expect(this.vm.coinReturn).toEqual({});
           });
         });
         describe("and there is something to return", function() {
-          beforeEach(function() {
-            this.vm._coinIntake = {
+          it("returns something", function() {
+            this.vm._dispenseCoins({
               type1: 10,
               type2: 3
-            };
-          });
-          it("returns something", function() {
-            this.vm.returnCoins();
+            });
             expect(this.vm.coinReturn).toEqual({
               type1: 10,
               type2: 3
             });
-            expect(this.vm._coinIntake).toEqual({});
           });
         });
       });
@@ -332,11 +344,8 @@ describe("Jasmine Test Runner", function() {
           };
         });
         describe("and there is nothing to return", function() {
-          beforeEach(function() {
-            this.vm._coinIntake = {};
-          });
           it("returns nothing, but leaves existing stuff alone", function() {
-            this.vm.returnCoins();
+            this.vm._dispenseCoins({});
             expect(this.vm.coinReturn).toEqual({
               junk: 2,
               type1: 3
@@ -344,20 +353,16 @@ describe("Jasmine Test Runner", function() {
           });
         });
         describe("and there is something to return", function() {
-          beforeEach(function() {
-            this.vm._coinIntake = {
+          it("adds something to existing coins in return tray", function() {
+            this.vm._dispenseCoins({
               type1: 10,
               type2: 3
-            };
-          });
-          it("adds something to existing coins in return tray", function() {
-            this.vm.returnCoins();
+            });
             expect(this.vm.coinReturn).toEqual({
               junk: 2,
               type1: 13,
               type2: 3
             });
-            expect(this.vm._coinIntake).toEqual({});
           });
         });
       });
@@ -386,6 +391,7 @@ describe("Jasmine Test Runner", function() {
         expect(this.vm._dispenseChange).toHaveBeenCalledWith(1.5);
       });
     });
+
     xdescribe("Exact Change Only", function() {
       //this is a some-what vague requirement because it
       //could be possible to be able to make change for one product
