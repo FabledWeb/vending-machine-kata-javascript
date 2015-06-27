@@ -363,7 +363,7 @@ describe("Jasmine Test Runner", function() {
       });
     });
 
-    xdescribe("Make Change", function() {
+    describe("Make Change", function() {
       //NOTE: check for exact change only scenario...
       //just make sure it's triggered from here
           //xit("it consumes the coins in the intake, bringing balance to $0", function() {
@@ -371,6 +371,20 @@ describe("Jasmine Test Runner", function() {
             //this.vm.selectProduct("that'll have to do snack");
             //expect(this.vm._consumeCoins).toHaveBeenCalled();
           //});
+      beforeEach(function() {
+        spyOn(this.vm, '_consumeCoins');
+        spyOn(this.vm, '_dispenseChange');
+      });
+      it("consumes the input coins", function() {
+        this.vm._makeChange();
+        expect(this.vm._consumeCoins).toHaveBeenCalled();
+      });
+      it("tries to dispense the right amount of change", function() {
+        spyOn(this.vm, '_computeBalance').and.returnValue(2.75);
+        spyOn(this.vm, '_priceOfProduct').and.returnValue(1.25);
+        this.vm._makeChange();
+        expect(this.vm._dispenseChange).toHaveBeenCalledWith(1.5);
+      });
     });
     xdescribe("Exact Change Only", function() {
       //this is a some-what vague requirement because it

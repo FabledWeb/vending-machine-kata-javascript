@@ -104,8 +104,16 @@
     this._coinIntake = {};
   };
 
-  VendingMachine._makeChange = function() {
+  VendingMachine._dispenseChange = function() {
     //TODO: implement
+  };
+
+  VendingMachine._makeChange = function(product) {
+    var balance = this._computeBalance();
+    var diff = balance - this._priceOfProduct(product);
+    //consume the coins in the intake first to use as toward the change
+    this._consumeCoins();
+    this._dispenseChange(diff);
   };
 
   VendingMachine.selectProduct = function(product) {
@@ -113,7 +121,7 @@
       if(this._canAfford(product)) {
         this._dispense(product);
         this._updateDisplay('THANK YOU');
-        this._makeChange();
+        this._makeChange(product);
       }
       else {
         this._updateDisplay('PRICE $'+this._priceOfProduct(product).toFixed(2));
